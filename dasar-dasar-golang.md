@@ -18,6 +18,7 @@
  - [Fungsi sebagai parameter](#fungsi-sebagai-parameter)
  - [Pointer](#pointer)
  - [Struct](#struct)
+ - [Latihan](#latihan)
 
 ## Hello, World!
 Kita akan memulai dengan sebuah program hello world sederhana. Untuk memulai, buatlah folder proyek, dan buatlah sebuah file bernama `main.go`. Pembuatan file dapat dilakukan melalui terminal menggunakan perintah `touch <nama file>`. File berekstensi .go adalah file yang dapat diproses oleh Go. Berikut merupakan contoh kode program hello world.
@@ -2592,3 +2593,18 @@ Perlu diketahui juga, dan di atas sudah sempat disinggung, bahwa teknik type ali
 type Number = int
 var num Number = 12
 ```
+
+### Latihan
+Buatlah sebuah singly linked list menggunakan Golang dan buat pula fungsi untuk :
+1. menambahkan elemen di akhir linked list
+2. fungsi untuk menghapus elemen di akhir linked list
+3. fungsi untuk mencetak seluruh elemen dalam linked list
+
+Singly linked list adalah sebuah struktur data seperti array yang terdiri atas node yang menunjuk node lainnya dan bersifat satu arah (sebuah node hanya menunjuk pada sebuah node setelahnya). Berikut merupakan ilustrasi singly linked list :
+
+
+<p align="center">
+  <img src="https://socs.binus.ac.id/files/2017/03/rini-1.jpg" width="40%" height="20%">
+</p>
+
+
