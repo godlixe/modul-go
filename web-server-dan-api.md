@@ -618,3 +618,12 @@ func main() {
 Postman adalah sebuah tools untuk mengembangkan API. Dengan Postman, kita dapat membuat request, dan melihat respons dengan sebuah UI. Kita juga dapat membuat dokumentasi API menggunakan Postman. Berikut merupakan contoh penggunaannya :
 
 ![image](https://user-images.githubusercontent.com/79066982/219708067-6878fb8e-0863-4be0-bd93-863aec37b3c8.png)
+
+## Penugasan
+Buat sebuah API Todos sederhana yang mendukung operasi-operasi berikut :
+
+1. Memasukkan data ke dalam database
+2. Menghapus data dari database
+3. Melihat data dari database
+
+Buat juga dokumentasi postman untuk ketiga endpoint tersebut!
