@@ -1,21 +1,44 @@
 # Web Server dan API 🌐
 
+## Daftar Isi
+
+- [Preparation](#preparation)
+- [Info](#info-ℹ️)
+- [Web Server](#web-server)
+- [HTTP](#http)
+- [FYI](#fyi-😮)
+- [Handling Multiple Requests](#handling-multiple-request)
+- [Goroutines and Concurrency](#goroutines-and-concurrency)
+- [API](#api)
+- [Simple Go Web Server](#simple-go-web-server)
+- [Try It Out](#try-it=out)
+- [Connecting to Database](#connecting-to-database)
+- [Inserting Values](#inserting-values)
+- [Getting Values](#getting-values)
+- [Integrating Both](#integrating-both)
+- [Postman](#postman)
+
+
 ## Preparation
+
 Noorples,pada modul sebelumnya kita telah mempelajari dasar-dasar pemrograman dalam bahasa Golang. Pada modul ini dan seterusnya, kita akan lebih berfokus pada pemrograman API. Oleh karena itu, kalian dapat mempersiapkan hal-hal berikut :
 
 1. **Postman**
-	Postman adalah tools yang digunakan untuk mempermudah pengembangan API. Kita dapat dengan mudah mengirimkan request HTTP ke API kita dengan postman. Kalian dapat mengunduh Postman dari https://www.postman.com/downloads/.
+ Postman adalah tools yang digunakan untuk mempermudah pengembangan API. Kita dapat dengan mudah mengirimkan request HTTP ke API kita dengan postman. Kalian dapat mengunduh Postman dari <https://www.postman.com/downloads/>.
 2. **PostgreSQL**
-	PostgreSQL adalah salah satu database relasional yang digunakan untuk kepentingan penyimpanan data. Aplikasi backend yang kita buat akan dapat menyimpan data ke dalam PostgreSQL. Silakan unduh PostgreSQL dari https://www.postgresql.org/download/.
+ PostgreSQL adalah salah satu database relasional yang digunakan untuk kepentingan penyimpanan data. Aplikasi backend yang kita buat akan dapat menyimpan data ke dalam PostgreSQL. Silakan unduh PostgreSQL dari <https://www.postgresql.org/download/>.
 
 ## Info ℹ️
+
 Terdapat buku-buku terkait Golang yang dapat kalian akses melalui :
-https://drive.google.com/drive/folders/1vlNk40bWBgMEqztgr-jIRePxML2gmgg4?usp=share_link
+<https://drive.google.com/drive/folders/1vlNk40bWBgMEqztgr-jIRePxML2gmgg4?usp=share_link>
 
 ## Web Server
+
 Web server (HTTP) adalah perangkat lunak yang memahami URL dan juga HTTP (protokol HTTP). Sebuah web server dapat diakses melalui suatu domain name dan dapat menyajikan konten kepada end user (client). Pada modul ini, akan lebih banyak dibahas mengenai HTTP Server.
 
 ## HTTP
+
 HTTP adalah singkatan dari Hypertext Transfer Protocol. HTTP merupakan fondasi dari World Wide Web (WWW). HTTP adalah sebuah protokol (aturan, cara berkomunikasi) yang didesain untuk mentransfer informasi antara perangkat dalam jaringan. Alur tipikal dari protokol HTTP adalah sebuah client yang membuat permintaan pada sebuah server, yang mana server tersebut akan memberikan respons kembali. Terdapat beberapa versi HTTP, tetapi yang paling umum digunakan adalah HTTP 1.1. Aturan mengenai HTTP 1.1 terdapat pada [RFC 2616](https://www.rfc-editor.org/rfc/rfc2616#:~:text=RFC%202616%3A%20Hypertext%20Transfer%20Protocol%20%2D%2D%20HTTP%2F1.1).
 
 **Berikut merupakan struktur permintaan (request) dan respons (response) HTTP 1.1 :**
@@ -31,9 +54,11 @@ HTTP adalah singkatan dari Hypertext Transfer Protocol. HTTP merupakan fondasi d
 </p>
 
 ## FYI 😮
-RFC atau Request for Comments adalah dokumen formal yang mengandung spesifikasi dan catatan organisasi mengenai internet dan jaringan komputer. RFC dibuat oleh IETF (Internet Engineering Task Force), IETF adalah organisasi yang bertanggung jawab untuk internet dan standar-standarnya. 
+
+RFC atau Request for Comments adalah dokumen formal yang mengandung spesifikasi dan catatan organisasi mengenai internet dan jaringan komputer. RFC dibuat oleh IETF (Internet Engineering Task Force), IETF adalah organisasi yang bertanggung jawab untuk internet dan standar-standarnya.
 
 ## Handling Multiple Requests
+
 Saat mengakses sebuah laman web, atau mengirim request ke sebuah API, pernahkan kalian berpikir mengapa sebuah server dapat menghandle banyak orang dalam waktu bersamaan? Terdapat banyak cara yang telah dikemukakan untuk mengatasi masalah tersebut.
 
 - Awalnya, digunakan metode forking. Forking artinya menduplikasikan program dalam bentuk process menggunakan panggilan sistem fork(). Namun, forking memerlukan banyak overhead (usaha yang diperlukan untuk membuatnya).
@@ -42,8 +67,9 @@ Saat mengakses sebuah laman web, atau mengirim request ke sebuah API, pernahkan 
 - Metode event-driven adalah metode yang digunakan sampai sekarang. Metode ini menggunakan thread juga, tetapi menggunakan panggilan secara asynchronous untuk setiap request yang sampai. Asynchronous artinya adalah pemanggilan fungsi pada program yang non-blocking (tidak menunggu hasil), dan dapat berjalan di background.
 
     Pengibaratannya adalah seperti memesan makanan di restoran cepat saji (McRPL). Pembeli akan datang memesan ke kasir, dan kasir akan menginputnya ke dalam daftar pesanan. Kasir kemudian menyuruh pembeli untuk duduk. Di dapur, para pekerja akan memilih pesanan dari daftar dan mengerjakannya dalam urutan tertentu (biasanya yang memesan lebih dulu akan diutamakan). Setelah selesai, makanan akan diantarkan oleh pelayan.
-    
+
 ## Goroutines and Concurrency
+
 Sejauh ini, aplikasi yang kalian buat hanya dapat menjalankan satu fungsionalitas dan keluar. Bagaimana bila kita ingin program kita menjalankan sebuah fungsionalitas lain sekaligus menjalankan fungsionalitas lainnya tanpa saling mengganggu? Bagaimana jika kita ingin mempercepat program kita dengan memproses suatu hal secara bersamaan dan tidak berurutan?
 
 Pada bahasa Go, goroutine adalah jawabannya. Goroutine adalah lightweight thread (bukan thread OS, thread goroutine hanya berada pada level Go). Goroutine sangat ringan, satu buah goroutine memerlukan memori 2KB. Goroutine yang dibuat berjalan secara konkuren. Konkuren artinya adalah eksekusi yang hampir tampak seperti berjalan bersamaan, tetapi sebenarnya berjalan bergantian dengan sangat cepat. Lawan dari konkuren adalah paralel, paralel artinya berjalan bersamaan. Goroutine bersifat non-blocking atau asinkronus, yang berarti setelah menjalankan goroutine, program tetap berlangsung dan berlanjut.
@@ -74,20 +100,20 @@ func main() {
 ```
 
 ## API
-API adalah singkatan dari Application Programming Interface. API adalah antarmuka atau cara berkomunikasi dua atau lebih program. Standar yang digunakan untuk membuat API adalah API specification. Dalam konteks pemrograman web, API adalah antarmuka yang digunakan agar client dapat berkomunikasi dengan server. Terdapat banyak jenis API dalam konteks web, sesuai dengan protokol yang digunakan. Jenis yang paling umum digunakan adalah REST API. 
+
+API adalah singkatan dari Application Programming Interface. API adalah antarmuka atau cara berkomunikasi dua atau lebih program. Standar yang digunakan untuk membuat API adalah API specification. Dalam konteks pemrograman web, API adalah antarmuka yang digunakan agar client dapat berkomunikasi dengan server. Terdapat banyak jenis API dalam konteks web, sesuai dengan protokol yang digunakan. Jenis yang paling umum digunakan adalah REST API.
 
 REST adalah singkatan dari Representational State Transfer. REST adalah sebuah protokol yang bekerja dengan cara membuat rute/endpoint pada URL. Contohnya, saat kalian mengakses [https://www.its.ac.id/informatika/id/beranda/](https://www.its.ac.id/informatika/id/beranda/), server akan mengetahui bahwa kalian meminta semua yang harus ditampilkan pada halaman utama website Informatika ITS. Komunikasi menggunakna REST API bersifat satu arah, karena hanya client yang dapat mengirim permintaan dan kemudian direspons oleh server.
 
 REST API pada umumnya menggunakan JSON (JavaScript Object Notation) untuk berkomunikas. Penggunaan JSON dipilih karena dapat lebih mudah diproses oleh browser yang umumnya menggunakan JavaScript.
 
-
 ## Simple Go Web Server
+
 Pada modul ini, kita akan belajar menggunakan Go untuk membuat web server. Web server yang dibuat berupa web server sederhana yang akan menyajikan teks saat kita mengakses suatu URL di browser. Pembuatan web servernya akan menggunakan hanya library bawaan (stdlib) Go, yaitu `net/http`.
 
+Pertama, kita akan membuat file bernama `main.go`. Lalu membuat
 
-Pertama, kita akan membuat file bernama `http.go`. Lalu membuat
-
-```
+```go
 package main
 
 import (
@@ -115,7 +141,8 @@ Fungsi `http.ListenAndServe()` berfungsi untuk membuka sebuah web server pada po
 
 Fungsi `http.HandleFunc()` berfungsi untuk menambahkan sebuah fungsi handler ke rute yang ditentukan pada parameter pertama, dan fungsi handler pada parameter kedua. Fungsi handler memiliki parameter `http.ResponseWriter` dan `*http.Request`. ResponseWriter berfungsi untuk menulis respons dan mengembalikannya ke client dan Request berfungsi untuk mendapatkan request dari client.
 
-## Try It Out!
+## Try It Out
+
 Buat sebuah file bernama main.go, masukkan kode berikut dan jalankan programnya. Pergi ke browser, dan akses `http://localhost:8080/`.
 
 ```go
@@ -179,7 +206,26 @@ func lissajous(out io.Writer) {
 ```
 
 ## Connecting to Database
-Setelah mengunduh dan menginstall PostgreSQL, pastikan database dapat berjalan, kalian dapat menggunakan DBMS seperti DBeaver/HeidiSQL untuk mencoba koneksi databasenya. Untuk berkomunikasi dengan database di Golang, kita akan menggunakan sebuah stdlib atau Standard Library bernama `database/sql` yang memiliki utilitas untuk berkomunikasi dengan database SQL. Namun, agar dapat berjalan, library tersebut harus menggunakan sebuah driver database. Terdapat banyak jenis driver yang dapat digunakan, dan yang kita gunakan kali ini adalah `jackc/pgx`. Karena menggunakan library luar, kita harus menggunakan go modules untuk mengatur modul-modul librarynya. Lakukan `go mod init <nama_modul>` untuk membuat project Go mendukung go modules.
+
+Setelah mengunduh dan menginstall PostgreSQL, pastikan database dapat berjalan, kalian dapat menggunakan DBMS seperti DBeaver/HeidiSQL untuk mencoba koneksi databasenya. Kalian juga bisa melakukan koneksi database melalui terminal dengan perintah "
+
+```bash
+psql -U postgres
+```
+
+Untuk berkomunikasi dengan database di Golang, kita akan menggunakan sebuah stdlib atau Standard Library bernama `database/sql` yang memiliki utilitas untuk berkomunikasi dengan database SQL. Namun, agar dapat berjalan, library tersebut harus menggunakan sebuah driver database. Terdapat banyak jenis driver yang dapat digunakan, dan yang kita gunakan kali ini adalah `jackc/pgx`. Karena menggunakan library luar, kita harus menggunakan go modules untuk mengatur modul-modul librarynya. Lakukan `go mod init <nama_modul>` untuk membuat project Go mendukung go modules.
+
+Sebelum melanjutkan, kita harus membuat database baru dengan nama bebas, dalam contoh ini kita akan membuatnya dengan nama pgx :
+
+```sql
+CREATE DATABASE pgx;
+```
+
+Kemudian kalian dapat masuk ke dalam database yang sudah dibuat tersebut dengan perintah :
+
+```bash
+\c pgx
+```
 
 Untuk menginstall driver tersebut, kita akan menggunakan perintah :
 
@@ -188,6 +234,7 @@ go get github.com/jackc/pgx
 ```
 
 Berikut merupakan kode untuk menyambungkan program Go dengan database PostgreSQL menggunakan driver pgx :
+
 ```Go
 package main
 
@@ -212,7 +259,7 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	
+
 	err = db.Ping()
 	if err != nil {
 		fmt.Println(err)
@@ -223,12 +270,13 @@ func main() {
 String yang merupakan parameter pertama dari fungsi `sql.Open()` adalah driver yang digunakan. String pada parameter kedua adalah database URL, untuk PostgreSQL, format yang digunakan umumnya sebagai berikut `postgres://username:password@localhost:5432/database_name`. Jangan lupa untuk membuat database terlebih dahulu. Fungsi `db.Ping()` akan membuat koneksi ke database, apabila terjadi error, maka fungsi akan mengembalikan error.
 
 ## Inserting Values
+
 Sebelum itu, mari kita buat sebuah tabel sederhana :
 
 ```SQL
 CREATE TABLE users (
-	ID serial PRIMARY KEY,
-	Name VARCHAR(50) NOT NULL,
+    ID serial PRIMARY KEY,
+    Name VARCHAR(50) NOT NULL,
 );
 ```
 
@@ -238,68 +286,69 @@ Kita akan mencoba memasukkan data menggunakan Go, berikut kode program untuk mem
 package main
 
 import (
-	"database/sql"
-	"fmt"
+    "database/sql"
+    "fmt"
 
-	_ "github.com/jackc/pgx/v5/stdlib"
+    _ "github.com/jackc/pgx/v5/stdlib"
 )
 
 type User struct {
-	ID   uint64
-	Name string
+    ID   uint64
+    Name string
 }
 
 func Connect() (*sql.DB, error) {
-	db, err := sql.Open("pgx", "postgres://postgres:root@localhost:5432/pgx")
-	if err != nil {
-		return nil, err
-	}
+    db, err := sql.Open("pgx", "postgres://postgres:root@localhost:5432/pgx")
+    if err != nil {
+        return nil, err
+    }
 
-	return db, nil
+    return db, nil
 }
 
 func InsertToDB(db *sql.DB, user User) (*User, error) {
-	rows, err := db.Query("INSERT INTO users (name) VALUES ($1) RETURNING id, name", user.Name)
-	if err != nil {
-		return nil, err
-	}
+    rows, err := db.Query("INSERT INTO users (name) VALUES ($1) RETURNING id, name", user.Name)
+    if err != nil {
+        return nil, err
+    }
 
-	// call rows.Next() to move pointer to first result set
-	rows.Next()
+    // call rows.Next() to move pointer to first result set
+    rows.Next()
 
-	// result container object
-	result := User{}
+    // result container object
+    result := User{}
 
-	// insert rows to result
-	rows.Scan(&result.ID, &result.Name)
-	return &result, nil
+    // insert rows to result
+    rows.Scan(&result.ID, &result.Name)
+    return &result, nil
 }
 
 func main() {
-	db, err := Connect()
-	if err != nil {
-		fmt.Println(err)
-	}
+    db, err := Connect()
+    if err != nil {
+        fmt.Println(err)
+    }
 
-	err = db.Ping()
-	if err != nil {
-		fmt.Println(err)
-	}
+    err = db.Ping()
+    if err != nil {
+        fmt.Println(err)
+    }
 
-	alex := User{
-		Name: "alex",
-	}
+    alex := User{
+        Name: "alex",
+    }
 
-	res, err := InsertToDB(db, alex)
-	if err != nil {
-		fmt.Println(err)
-	}
+    res, err := InsertToDB(db, alex)
+    if err != nil {
+        fmt.Println(err)
+    }
 
-	fmt.Println(res)
+    fmt.Println(res)
 }
 ```
 
 ## Getting Values
+
 Sekarang, kita akan mengambil data dari database kita. Berikut merupakan contoh programnya :
 
 ```Go
@@ -380,6 +429,7 @@ func main() {
 ```
 
 ## Integrating Both
+
 Kita akan membuat sebuah API yang dapat mengembalikan hasil JSON dari data yang kita dapat di dalam database. Contoh programnya adalah sebagai berikut :
 
 ```Go
@@ -477,7 +527,6 @@ func main() {
 
 	fmt.Println("starting web server at http://localhost:8080/")
 	http.ListenAndServe(":8080", nil)
-
 }
 ```
 
@@ -565,7 +614,7 @@ func main() {
 ```
 
 ## Postman
+
 Postman adalah sebuah tools untuk mengembangkan API. Dengan Postman, kita dapat membuat request, dan melihat respons dengan sebuah UI. Kita juga dapat membuat dokumentasi API menggunakan Postman. Berikut merupakan contoh penggunaannya :
 
 ![image](https://user-images.githubusercontent.com/79066982/219708067-6878fb8e-0863-4be0-bd93-863aec37b3c8.png)
-
