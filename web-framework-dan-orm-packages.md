@@ -284,7 +284,7 @@ Perintah `\d dan \d+` digunakan untuk mendeskripsikan tabel ataupun database.
 
 
 ## Penggabungan Gin dan GORM
-Sekarang kita akan mencoba menggabungkan Gin dan Gorm. Kita akan membuat project yang lebih terstruktur. Kita akan membuat folder untuk masing-masing fugnsionalitas. Berikut merupakan
+Sekarang kita akan mencoba menggabungkan Gin dan Gorm. Kita akan membuat project yang lebih terstruktur. Kita akan membuat folder untuk masing-masing fugnsionalitas. Clone kode berikut menggunakan perintah `git clone https://github.com/godlixe/gin-gorm-simple` di folder pilihanmu. Di dalam folder tersebut, terdapat kode yang akan kita pelajari lebih lanjut di pelatihan nanti.
 
 
 ## Penugasan
