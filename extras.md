@@ -1,7 +1,11 @@
+
 ## Extras
-Modul ini berisi materi tambahan mengenai pengembangan perangkat lunak.
+Modul ini berisi materi tambahan mengenai pengembangan backend dengan Golang.
 
 ## Daftar Isi
+- [Arsitektur/Struktur Aplikasi](#arsitekturstruktur-aplikasi)
+- [Autentikasi](#autentikasi)
+- [Deployment](#deployment)
 
 ## Arsitektur/Struktur Aplikasi
 Pada modul sebelumnya, kita telah membuat aplikasi Go yang lebih terstruktur. Struktur tersebut memisahkan beberapa implementasi sehingga kode yang ditulis lebih rapi. Sejatinya, tidak ada struktur proyek yang secara resmi dinyatakan oleh pihak Golang. Struktur yang digunakan oleh orang-orang biasanya mengikuti struktur aplikasi besar yang telah dibuat dengan Golang seperti [Docker Compose](https://github.com/docker/compose), [K8s](https://github.com/kubernetes/kubernetes), dan lain lain.
@@ -43,7 +47,7 @@ Terdapat beberapa prinsip pengembangan perangkat lunak yang sebaiknya diikuti an
 - [KISS](https://en.wikipedia.org/wiki/KISS_principle)
 
 ### Implementasi Clean Architecture
-Kita akan mencoba mengimplementasikan clean architecture yang umum dipakai. Pada arsitektur ini, aplikasi dibagi menjadi beberapa bagian sesuai dengan struktur folder aplikasi. Sebelum itu, harap clone project berikut ke dalam local machine kalian https://github.com/godlixe/gin-gorm-api. Implementasi berikut menggunakan preemptive interface yang tidak dianjurkan oleh pemrogram golang pada umumnya https://github.com/golang/go/wiki/CodeReviewComments#interfaces. Walaupun begitu, implementasi ini dapat memberikan pemahaman terhadap cara kerja interface dan dependency injection.
+Kita akan mencoba mengimplementasikan clean architecture yang umum dipakai. Pada arsitektur ini, aplikasi dibagi menjadi beberapa bagian sesuai dengan struktur folder aplikasi.
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/79066982/222702222-e51d47c3-de10-4797-845a-93aa1740d50b.png" width="30%" height="15%">
@@ -252,3 +256,24 @@ func (j *jwtService) GetRoleByToken(token string) (string, error) {
 	return role, nil
 }
 ```
+
+## Deployment
+Terdapat beberapa layanan penyedia deployment gratis, salah satunya [railway.app](https://railway.app/). Sekarang kita akan belajar cara menggunakannya.
+
+### Penggunaan Railway
+Sebelum menggunakan Railway, kita harus membuat repo pada GitHub kita untuk 1 API-nya.
+1. Buatlah akun Railway dengan menggunakan akun GitHub.
+2. Lakukan verifikasi dengan menyetujui Terms and Condition Railway.
+3. Pertama kita akan membuat project untuk database kita. Pilihlah Provision PostgreSQL.
+4. Perhatikan cara connect DB nya melalui halaman Connect ketika klik Postgres.
+5. Selanjutnya kita akan membuat project untuk API kita.
+6. Create a New Project dengan memilih Deploy from GitHub repo.
+7. Pilih repo API yang ingin di deploy.
+8. Install & Authorize.
+9. Pada web Railway pilih repo yang sudah tadi kalian beri akses.
+10. Add Variables.
+11. Masukkan kredensial database pada Variables.
+12. Pergi ke Settings, lalu scroll hingga Domains, klik Custom Domain.
+13. Apabila sudah mendapatkan domain, kalian bisa cek status pada halaman  deployment.
+14. Kalian bisa cek melakukan request ke domain tersebut.
+15. Selesai!
